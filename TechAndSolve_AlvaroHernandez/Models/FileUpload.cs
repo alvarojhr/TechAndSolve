@@ -22,61 +22,59 @@ namespace TechAndSolve_AlvaroHernandez.Models
 
         public void ProcessFile(StreamReader reader)
         {
-            using (StreamWriter fileOut = new StreamWriter(@"lazy_loading_example_output.txt"))
+            using StreamWriter fileOut = new StreamWriter(@"lazy_loading_example_output.txt");
+            int caseNumber = 1;
+            string cases = reader.ReadLine();
+            while (reader.Peek() > -1)
             {
-                int caseNumber = 1;
-                string cases = reader.ReadLine();
-                while (reader.Peek() > -1)
+                int elementsQn = int.Parse(reader.ReadLine());
+                if (elementsQn <= 2)
                 {
-                    int elementsQn = int.Parse(reader.ReadLine());
-                    if (elementsQn <= 2)
+                    fileOut.Write("Case #" + caseNumber + ": 1\n");
+                    caseNumber++;
+                    for (int i = 0; i < elementsQn; i++)
                     {
-                        fileOut.Write("Case #" + caseNumber + ": 1\n");
-                        caseNumber++;
-                        for (int i = 0; i < elementsQn; i++)
-                        {
-                            reader.ReadLine();
-                        }
+                        reader.ReadLine();
                     }
-                    else
+                }
+                else
+                {
+                    int trips = 0;
+                    List<int> weights = new List<int>();
+
+                    for (int i = 0; i < elementsQn; i++)
                     {
-                        int trips = 0;
-                        List<int> weights = new List<int>();
+                        weights.Add(int.Parse(reader.ReadLine()));
+                    }
 
-                        for (int i = 0; i < elementsQn; i++)
+                    weights = weights.OrderByDescending(s => s).ToList();
+
+                    while (weights.Count > 0)
+                    {
+                        int heaviest = weights.FirstOrDefault();
+                        weights.RemoveAt(0);
+
+                        if (heaviest < 50)
                         {
-                            weights.Add(int.Parse(reader.ReadLine()));
-                        }
+                            double minElements = Math.Ceiling((50d / heaviest) - 1d);
 
-                        weights = weights.OrderByDescending(s => s).ToList();
-
-                        while (weights.Count > 0)
-                        {
-                            int heaviest = weights.FirstOrDefault();
-                            weights.RemoveAt(0);
-
-                            if (heaviest < 50)
+                            if (weights.Count >= minElements)
                             {
-                                double minElements = Math.Ceiling((50d / heaviest) - 1d);
-
-                                if (weights.Count >= minElements)
+                                for (int i = 0; i < minElements; i++)
                                 {
-                                    for (int i = 0; i < minElements; i++)
-                                    {
-                                        int lighter = weights.LastOrDefault();
-                                        weights.RemoveAt(weights.Count - 1);
-                                    }
-                                    trips++;
+                                    int lighter = weights.LastOrDefault();
+                                    weights.RemoveAt(weights.Count - 1);
                                 }
-                            }
-                            else
-                            {
                                 trips++;
                             }
                         }
-                        fileOut.Write("Case #" + caseNumber + ": " + trips+ "\n");
-                        caseNumber++;
+                        else
+                        {
+                            trips++;
+                        }
                     }
+                    fileOut.Write("Case #" + caseNumber + ": " + trips + "\n");
+                    caseNumber++;
                 }
             }
         }

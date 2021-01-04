@@ -21,14 +21,12 @@ namespace TechAndSolve_AlvaroHernandez.Controllers
 
         // GET: /FileUpload
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FileUpload>>> GetFileUploads()
+        public ActionResult<IEnumerable<FileUpload>> GetFileUploads()
         {
             byte[] fileBytes = System.IO.File.ReadAllBytes("lazy_loading_example_output.txt");
 
             return File(fileBytes, "text/plain", "lazy_loading_example_output.txt");
         }
-
-
 
         // POST: /FileUpload
         [HttpPost]
@@ -47,7 +45,7 @@ namespace TechAndSolve_AlvaroHernandez.Controllers
                 }
                 return StatusCode(201);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500);
                 throw;

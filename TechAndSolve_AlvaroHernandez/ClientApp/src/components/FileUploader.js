@@ -33,17 +33,17 @@ export class FileUploader extends React.Component {
                     const FileDownload = require('js-file-download');
 
                     Axios({
-                        url: '/FileUpload',
+                        url: url,
                         method: 'GET',
                         responseType: 'blob',
                     }).then((response) => {
                         FileDownload(response.data, 'lazy_loading_example_output.txt');
                         Swal.fire('Money is ready!', 'File downloaded with some tricks to be rich', 'success');
                     }).catch(error => {
-                        Swal.fire('F*ck', 'Something bad happened :(', 'error');
+                        Swal.fire('Bad news', 'Something happened :(', 'error');
                     });
                 }).catch(error => {
-                    Swal.fire('F*ck', 'Something bad happened :(', 'error');
+                    Swal.fire('Bad news', 'Something happened :(', 'error');
                 });
             }
         });
